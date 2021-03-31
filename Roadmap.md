@@ -10,4 +10,5 @@
 
 * Minimal project with active web socket connection between clients and services.
 * Tests run, with spring tests running as integration (mvn verify)
-  and normal tests running earlier (mvn test). 
+  and normal tests running earlier (mvn test).
+* Use message classes to send/receive server side
