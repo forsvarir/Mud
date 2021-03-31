@@ -1,4 +1,4 @@
-package com.forsvarir.mud;
+package com.forsvarir.mud.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

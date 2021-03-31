@@ -9,5 +9,4 @@ class MudApplicationTests {
 	@Test
 	void contextLoads() {
 	}
-
 }

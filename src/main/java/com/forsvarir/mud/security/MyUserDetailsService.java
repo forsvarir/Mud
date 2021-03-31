@@ -1,4 +1,4 @@
-package com.forsvarir.mud;
+package com.forsvarir.mud.security;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
