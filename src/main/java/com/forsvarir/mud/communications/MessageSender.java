@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class MessageSender {
     @Autowired
-    SimpMessagingTemplate messagingTemplate;
+    private SimpMessagingTemplate messagingTemplate;
 
     public void sendToAll(String message) {
         messagingTemplate.convertAndSend(WebSocketConfig.ALL_USER_ENDPOINT, new ResponseMessage(message));

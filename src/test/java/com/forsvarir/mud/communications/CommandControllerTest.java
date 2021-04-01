@@ -14,10 +14,10 @@ import static org.mockito.Mockito.verify;
 class CommandControllerTest {
 
     @Mock
-    CommandProcessor commandProcessor = new CommandProcessor();
+    private CommandProcessor commandProcessor = new CommandProcessor();
 
     @InjectMocks
-    CommandController commandController;
+    private CommandController commandController;
 
     @Test
     void command_sendsCommandToProcessor() {

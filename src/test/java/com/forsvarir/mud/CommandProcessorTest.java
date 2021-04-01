@@ -14,10 +14,10 @@ import static org.mockito.Mockito.verify;
 @ExtendWith(MockitoExtension.class)
 class CommandProcessorTest {
     @Mock
-    MessageSender messageSender;
+    private MessageSender messageSender;
 
     @InjectMocks
-    CommandProcessor commandProcessor;
+    private CommandProcessor commandProcessor;
 
     @Test
     void processCommand_sendsResponseWithCommand() {

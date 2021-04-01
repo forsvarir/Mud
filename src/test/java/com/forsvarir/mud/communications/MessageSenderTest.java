@@ -17,10 +17,10 @@ import static org.mockito.Mockito.verify;
 class MessageSenderTest {
 
     @Mock
-    SimpMessagingTemplate messagingTemplate;
+    private SimpMessagingTemplate messagingTemplate;
 
     @InjectMocks
-    MessageSender messageSender;
+    private MessageSender messageSender;
 
     @Test
     void sendToAll_sendsToAllUsersEndpoint() {

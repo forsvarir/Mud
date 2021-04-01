@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class CommandProcessor {
     @Autowired
-    MessageSender messageSender;
+    private MessageSender messageSender;
 
     public void processCommand(String command) {
         messageSender.sendToAll(command);

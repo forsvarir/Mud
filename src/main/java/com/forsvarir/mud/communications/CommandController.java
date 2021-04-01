@@ -9,7 +9,7 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class CommandController {
     @Autowired
-    CommandProcessor commandProcessor;
+    private CommandProcessor commandProcessor;
 
     @MessageMapping("/command")
     public void command(CommandMessage commandMessage) {
