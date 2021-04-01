@@ -2,7 +2,6 @@
 
 ### TO DO (priority order):
 
-* Encapsulate processing, away from controller
 * Provide mechanism for sending message to individual connection --> Requires connection identifiers
 * Add the concept of a 'Room' to limit visibility.
 
@@ -12,7 +11,8 @@
 * Tests run, with spring tests running as integration (mvn verify)
   and normal tests running earlier (mvn test).
 * Use message classes to send/receive server side
+* Encapsulate processing, away from controller
 
 ### Puzzles
 
-* Should `MessageSender` only deal with text and have responsibility for constructing messages from the string?
+~~* Should `MessageSender` only deal with text and have responsibility for constructing messages from the string?~~

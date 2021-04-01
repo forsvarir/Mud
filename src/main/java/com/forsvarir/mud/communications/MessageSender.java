@@ -10,7 +10,7 @@ public class MessageSender {
     @Autowired
     SimpMessagingTemplate messagingTemplate;
 
-    public void sendToAll(ResponseMessage message) {
-        messagingTemplate.convertAndSend(WebSocketConfig.ALL_USER_ENDPOINT, message);
+    public void sendToAll(String message) {
+        messagingTemplate.convertAndSend(WebSocketConfig.ALL_USER_ENDPOINT, new ResponseMessage(message));
     }
 }
