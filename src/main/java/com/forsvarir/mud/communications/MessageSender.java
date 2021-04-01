@@ -11,6 +11,10 @@ public class MessageSender {
     private SimpMessagingTemplate messagingTemplate;
 
     public void sendToAll(String message) {
-        messagingTemplate.convertAndSend(WebSocketConfig.ALL_USER_ENDPOINT, new ResponseMessage(message));
+        messagingTemplate.convertAndSend(WebSocketConfig.ALL_USER_ENDPOINT, new ResponseMessage(message, ""));
+    }
+
+    public void sendToUser(String message, String principalName, String sessionId) {
+        messagingTemplate.convertAndSendToUser(principalName, WebSocketConfig.USER_ENDPOINT, new ResponseMessage(message, sessionId));
     }
 }

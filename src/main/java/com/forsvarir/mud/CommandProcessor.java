@@ -9,7 +9,11 @@ public class CommandProcessor {
     @Autowired
     private MessageSender messageSender;
 
-    public void processCommand(String command) {
-        messageSender.sendToAll(command);
+    public void processCommand(String command, String principalName, String sessionId) {
+        if (command.equals(("global"))) {
+            messageSender.sendToAll("A global echo was requested");
+        } else {
+            messageSender.sendToUser(command, principalName, sessionId);
+        }
     }
 }

@@ -2,7 +2,7 @@
 
 ### TO DO (priority order):
 
-* Provide mechanism for sending message to individual connection --> Requires connection identifiers
+* Need to have a player representation
 * Add the concept of a 'Room' to limit visibility.
 
 ### DONE
@@ -12,6 +12,9 @@
   and normal tests running earlier (mvn test).
 * Use message classes to send/receive server side
 * Encapsulate processing, away from controller
+* Provide mechanism for sending message to individual connection --> STOMP uses the Principal to allow to user message
+  routing However, all tabs / sessions connected as that user get all messages. Passing the STOMP sessionId back in
+  response messages allows the session to filter messages so that it only processes those for its session.
 
 ### Puzzles
 

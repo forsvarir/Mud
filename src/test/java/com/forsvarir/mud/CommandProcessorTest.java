@@ -1,10 +1,8 @@
 package com.forsvarir.mud;
 
 import com.forsvarir.mud.communications.MessageSender;
-import com.forsvarir.mud.communications.messages.ResponseMessage;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -20,11 +18,17 @@ class CommandProcessorTest {
     private CommandProcessor commandProcessor;
 
     @Test
-    void processCommand_sendsResponseWithCommand() {
-        commandProcessor.processCommand("hello");
+    void processCommand_sendsGlobalToAll() {
+        commandProcessor.processCommand("global", "", "");
 
-        ArgumentCaptor<ResponseMessage> responseCaptor = ArgumentCaptor.forClass(ResponseMessage.class);
-        verify(messageSender).sendToAll("hello");
+        verify(messageSender).sendToAll("A global echo was requested");
+    }
+
+    @Test
+    void processCommand_nonGlobalSendToUserSession() {
+        commandProcessor.processCommand("a command", "A User", "A session");
+
+        verify(messageSender).sendToUser("a command", "A User", "A session");
     }
 
 }

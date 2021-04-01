@@ -23,9 +23,9 @@ class CommandControllerTest {
     void command_sendsCommandToProcessor() {
         CommandMessage command = new CommandMessage("hello");
 
-        commandController.command(command);
+        commandController.command(command, () -> "SomePrincipal", "SomeSession");
 
-        verify(commandProcessor).processCommand("hello");
+        verify(commandProcessor).processCommand("hello", "SomePrincipal", "SomeSession");
     }
 
 }

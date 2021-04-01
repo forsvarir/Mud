@@ -30,4 +30,16 @@ class MessageSenderTest {
         verify(messagingTemplate).convertAndSend(eq(WebSocketConfig.ALL_USER_ENDPOINT), responseCaptor.capture());
         assertThat(responseCaptor.getValue().getResponse()).isEqualTo("Some Message");
     }
+
+    @Test
+    void sendToUser_sendsToUserWithSessionEncoded() {
+        messageSender.sendToUser("Some Message", "A User", "A Session");
+
+        ArgumentCaptor<ResponseMessage> responseCaptor = ArgumentCaptor.forClass(ResponseMessage.class);
+        verify(messagingTemplate).convertAndSendToUser(eq("A User"),
+                eq(WebSocketConfig.USER_ENDPOINT),
+                responseCaptor.capture());
+        assertThat(responseCaptor.getValue().getResponse()).isEqualTo("Some Message");
+        assertThat(responseCaptor.getValue().getSessionId()).isEqualTo("A Session");
+    }
 }

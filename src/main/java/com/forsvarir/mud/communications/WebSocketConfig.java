@@ -11,10 +11,11 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     public static final String ALL_USER_ENDPOINT = "/ws/responses";
+    public static final String USER_ENDPOINT = "/queue/response";
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        config.enableSimpleBroker("/ws");
+        config.enableSimpleBroker("/ws/", "/queue/");
         config.setApplicationDestinationPrefixes("/mud");
     }
 
