@@ -8,17 +8,15 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class CommandControllerTest {
 
     @Mock
-    SimpMessagingTemplate messagingTemplate;
+    MessageSender messageSender;
 
     @InjectMocks
     CommandController commandController;
@@ -30,8 +28,7 @@ class CommandControllerTest {
 
         ArgumentCaptor<ResponseMessage> responseCaptor = ArgumentCaptor.forClass(ResponseMessage.class);
 
-        verify(messagingTemplate).convertAndSend(eq("/ws/responses"),
-                responseCaptor.capture());
+        verify(messageSender).sendToAll(responseCaptor.capture());
 
         assertThat(responseCaptor.getValue().getResponse()).isEqualTo("hello");
     }
