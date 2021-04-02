@@ -7,10 +7,15 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class CommandProcessorTest {
+    @Mock
+    private SessionManager sessionManager;
+
     @Mock
     private MessageSender messageSender;
 
@@ -31,4 +36,14 @@ class CommandProcessorTest {
         verify(messageSender).sendToUser("a command", "A User", "A session");
     }
 
+    @Test
+    void processCommand_tellSendsToCorrectUser() {
+        Player targetPlayer = new Player("harry", "harryPrincipal", "harrySession");
+        when(sessionManager.findPlayer(any())).thenReturn(targetPlayer);
+
+        commandProcessor.processCommand("tell harry \"hi!\"", "", "");
+
+        verify(sessionManager).findPlayer("harry");
+        verify(messageSender).sendToUser("hi!", "harryPrincipal", "harrySession");
+    }
 }

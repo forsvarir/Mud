@@ -22,8 +22,11 @@ function connect(command) {
             console.log(response);
             showResponse(JSON.parse(response.body).response);
         });
+        stompClient.subscribe('/user/queue/session', function(response) {
+            showResponse('Session: ' + JSON.parse(response.body).status)
+            $("#player").css('background-color', '#66FF00');
+        });
         stompClient.subscribe('/user/queue/response', function(response) {
-            console.log("private:" + response);
             decodedMessage = JSON.parse(response.body);
             if(decodedMessage.sessionId == sessionId) {
                 showResponse(decodedMessage.response);
@@ -31,6 +34,7 @@ function connect(command) {
                 console.log("ignored message!");
             }
         });
+        stompClient.send("/mud/createSession", {}, JSON.stringify({'playerName': $("#player").val()}));
         stompClient.send("/mud/command", {}, JSON.stringify({'command': command}));
     });
 }

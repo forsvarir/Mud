@@ -2,8 +2,10 @@
 
 ### TO DO (priority order):
 
-* Need to have a player representation
 * Add the concept of a 'Room' to limit visibility.
+* Improve "tell" command processing, including error conditions
+* Develop command processor - possibly tokeniser, command classes?
+* Session disconnections / timeout actions
 
 ### DONE
 
@@ -15,6 +17,7 @@
 * Provide mechanism for sending message to individual connection --> STOMP uses the Principal to allow to user message
   routing However, all tabs / sessions connected as that user get all messages. Passing the STOMP sessionId back in
   response messages allows the session to filter messages so that it only processes those for its session.
+* Need to have a player representation
 
 ### Puzzles
 
