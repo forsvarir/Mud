@@ -13,24 +13,27 @@ public class CommandProcessor {
     private MessageSender messageSender;
 
     public void processCommand(String command, String principalName, String sessionId) {
-        if (command.equals(("global"))) {
-            messageSender.sendToAll("A global echo was requested");
+        if (command.startsWith("shout")) {
+            processShoutCommand(command, sessionManager.findPlayer(principalName, sessionId));
         } else if (command.startsWith("tell")) {
-            processTellCommand(command);
+            processTellCommand(command, sessionManager.findPlayer(principalName, sessionId));
         } else {
-            messageSender.sendToUser(command, principalName, sessionId);
+            messageSender.sendToUser("Huh?", principalName, sessionId);
         }
     }
 
-    private void processTellCommand(String command) {
+    private void processShoutCommand(String command, Player sendingPlayer) {
+        var message = command.substring(command.indexOf(" ") + 1);
+        messageSender.sendToAll(sendingPlayer.getName() + " shouts \"" + message + "\"");
+    }
+
+    private void processTellCommand(String command, Player sender) {
         var inter = command.replace("tell ", "");
         var playerName = inter.substring(0, inter.indexOf(" "));
         var targetPlayer = sessionManager.findPlayer(playerName);
 
-        var textStart = inter.indexOf("\"") + 1;
-        var textEnd = inter.lastIndexOf("\"");
-
-        var message = inter.substring(textStart, textEnd);
-        messageSender.sendToUser(message, targetPlayer.getPrincipal(), targetPlayer.getSessionId());
+        var message = inter.substring(inter.indexOf(" ") + 1);
+        messageSender.sendToUser(sender.getName() + " tells you \"" + message + "\"", targetPlayer.getPrincipal(), targetPlayer.getSessionId());
+        messageSender.sendToUser("You tell " + targetPlayer.getName() + " \"" + message + "\"", sender.getPrincipal(), sender.getSessionId());
     }
 }

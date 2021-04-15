@@ -24,26 +24,31 @@ class CommandProcessorTest {
 
     @Test
     void processCommand_sendsGlobalToAll() {
-        commandProcessor.processCommand("global", "", "");
+        Player sendingPlayer = new Player("Harry", "principal", "harry");
+        when(sessionManager.findPlayer(any(), any())).thenReturn(sendingPlayer);
 
-        verify(messageSender).sendToAll("A global echo was requested");
+        commandProcessor.processCommand("shout Hello!", "principal", "harry");
+
+        verify(messageSender).sendToAll("Harry shouts \"Hello!\"");
     }
 
     @Test
-    void processCommand_nonGlobalSendToUserSession() {
-        commandProcessor.processCommand("a command", "A User", "A session");
+    void processCommand_unknownCommand_sendsHuh() {
+        commandProcessor.processCommand("unknownCommand", "A User", "A session");
 
-        verify(messageSender).sendToUser("a command", "A User", "A session");
+        verify(messageSender).sendToUser("Huh?", "A User", "A session");
     }
 
     @Test
     void processCommand_tellSendsToCorrectUser() {
         Player targetPlayer = new Player("harry", "harryPrincipal", "harrySession");
         when(sessionManager.findPlayer(any())).thenReturn(targetPlayer);
-
-        commandProcessor.processCommand("tell harry \"hi!\"", "", "");
+        Player talkingPlayer = new Player("talker", "talkingPrincipal", "talkingSession");
+        when(sessionManager.findPlayer(any(), any())).thenReturn(talkingPlayer);
+        commandProcessor.processCommand("tell harry hi!", "talkingPrincipal", "talkingSession");
 
         verify(sessionManager).findPlayer("harry");
-        verify(messageSender).sendToUser("hi!", "harryPrincipal", "harrySession");
+        verify(messageSender).sendToUser("talker tells you \"hi!\"", "harryPrincipal", "harrySession");
+        verify(messageSender).sendToUser("You tell harry \"hi!\"", "talkingPrincipal", "talkingSession");
     }
 }

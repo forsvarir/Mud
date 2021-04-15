@@ -21,7 +21,6 @@ public class CommandController {
     public void command(CommandMessage commandMessage,
                         Principal principal,
                         @Header("simpSessionId") String sessionId) {
-        logger.info(String.format("MESSAGE(%s): %s ", sessionId, commandMessage.getCommand()));
         commandProcessor.processCommand(commandMessage.getCommand(), principal.getName(), sessionId);
     }
 }

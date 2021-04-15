@@ -2,6 +2,7 @@
 
 ### TO DO (priority order):
 
+* User player where possible, rather than principal/sessionh
 * Add the concept of a 'Room' to limit visibility.
 * Improve "tell" command processing, including error conditions
 * Develop command processor - possibly tokeniser, command classes?
