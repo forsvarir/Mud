@@ -14,7 +14,7 @@ import static org.mockito.Mockito.verify;
 class CommandControllerTest {
 
     @Mock
-    private CommandProcessor commandProcessor = new CommandProcessor();
+    private CommandProcessor commandProcessor;
 
     @InjectMocks
     private CommandController commandController;

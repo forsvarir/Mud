@@ -2,20 +2,19 @@ package com.forsvarir.mud.communications;
 
 import com.forsvarir.mud.CommandProcessor;
 import com.forsvarir.mud.communications.messages.CommandMessage;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.stereotype.Controller;
 
 import java.security.Principal;
-import java.util.logging.Logger;
 
 @Controller
 public class CommandController {
-    Logger logger = Logger.getLogger(CommandController.class.getName());
+    private final CommandProcessor commandProcessor;
 
-    @Autowired
-    private CommandProcessor commandProcessor;
+    CommandController(CommandProcessor commandProcessor) {
+        this.commandProcessor = commandProcessor;
+    }
 
     @MessageMapping("/command")
     public void command(CommandMessage commandMessage,

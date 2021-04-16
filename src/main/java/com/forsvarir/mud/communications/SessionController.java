@@ -3,7 +3,6 @@ package com.forsvarir.mud.communications;
 import com.forsvarir.mud.SessionManager;
 import com.forsvarir.mud.communications.messages.ConnectMessage;
 import com.forsvarir.mud.communications.messages.ConnectionStatusMessage;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.annotation.SendToUser;
@@ -13,8 +12,11 @@ import java.security.Principal;
 
 @Controller
 public class SessionController {
-    @Autowired
-    private SessionManager sessionManager;
+    private final SessionManager sessionManager;
+
+    SessionController(SessionManager sessionManager) {
+        this.sessionManager = sessionManager;
+    }
 
     @MessageMapping("/createSession")
     @SendToUser("/queue/session")

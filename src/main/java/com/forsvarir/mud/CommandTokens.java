@@ -2,7 +2,7 @@ package com.forsvarir.mud;
 
 public class CommandTokens {
     private final String command;
-    private String arguments;
+    private final String arguments;
 
     public CommandTokens(String command, String arguments) {
         this.command = command;

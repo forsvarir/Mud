@@ -1,19 +1,19 @@
 package com.forsvarir.mud;
 
 import com.forsvarir.mud.communications.MessageSender;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CommandProcessor {
-    @Autowired
-    private SessionManager sessionManager;
+    private final SessionManager sessionManager;
+    private final MessageSender messageSender;
+    private final CommandTokenizer commandTokenizer;
 
-    @Autowired
-    private MessageSender messageSender;
-
-    @Autowired
-    private CommandTokenizer commandTokenizer;
+    public CommandProcessor(SessionManager sessionManager, MessageSender messageSender, CommandTokenizer commandTokenizer) {
+        this.sessionManager = sessionManager;
+        this.messageSender = messageSender;
+        this.commandTokenizer = commandTokenizer;
+    }
 
     public void processCommand(String command, String principalName, String sessionId) {
         var tokens = commandTokenizer.extractTokens(command);
