@@ -1,6 +1,7 @@
 package com.forsvarir.mud;
 
 import com.forsvarir.mud.communications.MessageSender;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -19,13 +20,30 @@ class CommandProcessorTest {
     @Mock
     private MessageSender messageSender;
 
+    @Mock
+    private CommandTokenizer commandTokenizer;
+
     @InjectMocks
     private CommandProcessor commandProcessor;
 
+    @BeforeEach
+    void beforeEach() {
+        when(commandTokenizer.extractTokens(any())).thenReturn(new CommandTokens("", ""));
+    }
+
     @Test
-    void processCommand_sendsGlobalToAll() {
+    void processCommand_sendsCommandToTokenizer() {
+        commandProcessor.processCommand("super secret command", "principal", "harry");
+
+        verify(commandTokenizer).extractTokens("super secret command");
+    }
+
+    @Test
+    void processCommand_sendsShoutToAll() {
         Player sendingPlayer = new Player("Harry", "principal", "harry");
         when(sessionManager.findPlayer(any(), any())).thenReturn(sendingPlayer);
+
+        when(commandTokenizer.extractTokens(any())).thenReturn(new CommandTokens("shout", "Hello!"));
 
         commandProcessor.processCommand("shout Hello!", "principal", "harry");
 
@@ -34,6 +52,8 @@ class CommandProcessorTest {
 
     @Test
     void processCommand_unknownCommand_sendsHuh() {
+        when(commandTokenizer.extractTokens(any())).thenReturn(new CommandTokens("unknownCommand", ""));
+
         commandProcessor.processCommand("unknownCommand", "A User", "A session");
 
         verify(messageSender).sendToUser("Huh?", "A User", "A session");
@@ -45,6 +65,9 @@ class CommandProcessorTest {
         when(sessionManager.findPlayer(any())).thenReturn(targetPlayer);
         Player talkingPlayer = new Player("talker", "talkingPrincipal", "talkingSession");
         when(sessionManager.findPlayer(any(), any())).thenReturn(talkingPlayer);
+
+        when(commandTokenizer.extractTokens(any())).thenReturn(new CommandTokens("tell", "harry hi!"));
+
         commandProcessor.processCommand("tell harry hi!", "talkingPrincipal", "talkingSession");
 
         verify(sessionManager).findPlayer("harry");
