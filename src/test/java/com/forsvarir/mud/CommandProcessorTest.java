@@ -1,34 +1,43 @@
 package com.forsvarir.mud;
 
+import com.forsvarir.mud.commands.MudCommand;
+import com.forsvarir.mud.commands.ShoutCommand;
+import com.forsvarir.mud.commands.TellCommand;
+import com.forsvarir.mud.commands.UnknownCommand;
 import com.forsvarir.mud.communications.MessageSender;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.Map;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
 class CommandProcessorTest {
-    @Mock
     private SessionManager sessionManager;
-
-    @Mock
     private MessageSender messageSender;
-
-    @Mock
     private CommandTokenizer commandTokenizer;
+    private UnknownCommand unknownCommand;
+    private Map<String, MudCommand> commands;
 
     @InjectMocks
     private CommandProcessor commandProcessor;
 
     @BeforeEach
     void beforeEach() {
+        sessionManager = mock(SessionManager.class);
+        messageSender = mock(MessageSender.class);
+        commandTokenizer = mock(CommandTokenizer.class);
+        unknownCommand = new UnknownCommand(messageSender);
+        commands = Map.of("tellCommand", new TellCommand(messageSender, sessionManager),
+                "shoutCommand", new ShoutCommand(messageSender));
+
+        commandProcessor = new CommandProcessor(sessionManager, messageSender, commandTokenizer, unknownCommand, commands);
         when(commandTokenizer.extractTokens(any())).thenReturn(new CommandTokens("", ""));
+
+        Player sendingPlayer = new Player("player", "prince", "sess");
+        when(sessionManager.findPlayer(any(), any())).thenReturn(sendingPlayer);
     }
 
     @Test
@@ -52,6 +61,9 @@ class CommandProcessorTest {
 
     @Test
     void processCommand_unknownCommand_sendsHuh() {
+        Player sendingPlayer = new Player("Harry", "A User", "A session");
+        when(sessionManager.findPlayer(any(), any())).thenReturn(sendingPlayer);
+
         when(commandTokenizer.extractTokens(any())).thenReturn(new CommandTokens("unknownCommand", ""));
 
         commandProcessor.processCommand("unknownCommand", "A User", "A session");
