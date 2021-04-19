@@ -13,9 +13,11 @@ import java.security.Principal;
 @Controller
 public class SessionController {
     private final SessionManager sessionManager;
+    private final MessageSender messageSender;
 
-    SessionController(SessionManager sessionManager) {
+    SessionController(SessionManager sessionManager, MessageSender messageSender) {
         this.sessionManager = sessionManager;
+        this.messageSender = messageSender;
     }
 
     @MessageMapping("/createSession")
@@ -24,7 +26,9 @@ public class SessionController {
                                                  Principal principal,
                                                  @Header("simpSessionId") String sessionId) {
 
-        sessionManager.createSession(principal.getName(), sessionId, connectMessage.getPlayerName());
+        var player = sessionManager.createSession(principal.getName(), sessionId, connectMessage.getPlayerName());
+
+        messageSender.sendToPlayer("Welcome!\n\r", player);
 
         return new ConnectionStatusMessage("Connected");
     }

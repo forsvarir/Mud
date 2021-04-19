@@ -1,5 +1,6 @@
 package com.forsvarir.mud.communications;
 
+import com.forsvarir.mud.Player;
 import com.forsvarir.mud.communications.messages.ResponseMessage;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
@@ -18,5 +19,9 @@ public class MessageSender {
 
     public void sendToUser(String message, String principalName, String sessionId) {
         messagingTemplate.convertAndSendToUser(principalName, WebSocketConfig.USER_ENDPOINT, new ResponseMessage(message, sessionId));
+    }
+
+    public void sendToPlayer(String message, Player player) {
+        messagingTemplate.convertAndSendToUser(player.getPrincipal(), WebSocketConfig.USER_ENDPOINT, new ResponseMessage(message, player.getSessionId()));
     }
 }

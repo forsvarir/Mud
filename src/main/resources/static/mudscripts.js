@@ -23,7 +23,7 @@ function connect() {
             showResponse(JSON.parse(response.body).response);
         });
         stompClient.subscribe('/user/queue/session', function(response) {
-            showResponse('Session: ' + JSON.parse(response.body).status)
+            console.log('Session: ' + JSON.parse(response.body).status)
             $("#player").css('background-color', '#66FF00');
             $('#connect_form').hide();
             $('#send_form').show(0, function() {

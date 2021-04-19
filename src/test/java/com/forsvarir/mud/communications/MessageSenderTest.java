@@ -1,5 +1,6 @@
 package com.forsvarir.mud.communications;
 
+import com.forsvarir.mud.Player;
 import com.forsvarir.mud.communications.messages.ResponseMessage;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -37,6 +38,19 @@ class MessageSenderTest {
 
         ArgumentCaptor<ResponseMessage> responseCaptor = ArgumentCaptor.forClass(ResponseMessage.class);
         verify(messagingTemplate).convertAndSendToUser(eq("A User"),
+                eq(WebSocketConfig.USER_ENDPOINT),
+                responseCaptor.capture());
+        assertThat(responseCaptor.getValue().getResponse()).isEqualTo("Some Message");
+        assertThat(responseCaptor.getValue().getSessionId()).isEqualTo("A Session");
+    }
+
+    @Test
+    void sendToPlayer_sendsToPlayerWithSessionEncoded() {
+        var player = new Player("A Player", "A Principal", "A Session");
+        messageSender.sendToPlayer("Some Message", player);
+
+        ArgumentCaptor<ResponseMessage> responseCaptor = ArgumentCaptor.forClass(ResponseMessage.class);
+        verify(messagingTemplate).convertAndSendToUser(eq("A Principal"),
                 eq(WebSocketConfig.USER_ENDPOINT),
                 responseCaptor.capture());
         assertThat(responseCaptor.getValue().getResponse()).isEqualTo("Some Message");
