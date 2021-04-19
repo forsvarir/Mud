@@ -8,8 +8,10 @@ import java.util.concurrent.ConcurrentHashMap;
 public class SessionManager {
     private final ConcurrentHashMap<String, Player> playersByPrincipalSession = new ConcurrentHashMap<>();
 
-    public void createSession(String principalName, String sessionId, String playerName) {
-        playersByPrincipalSession.put(buildSessionKey(principalName, sessionId), new Player(playerName, principalName, sessionId));
+    public Player createSession(String principalName, String sessionId, String playerName) {
+        final Player newPlayer = new Player(playerName, principalName, sessionId);
+        playersByPrincipalSession.put(buildSessionKey(principalName, sessionId), newPlayer);
+        return newPlayer;
     }
 
     public Player findPlayer(String principalName, String sessionId) {
