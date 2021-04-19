@@ -23,7 +23,7 @@ class SessionControllerTest {
 
     @Test
     void createSession_addsSession() {
-        ConnectMessage connectMessage = new ConnectMessage("PlayerName");
+        ConnectMessage connectMessage = new ConnectMessage("PlayerName", "password");
         Principal principal = () -> "PrincipalName";
 
         sessionController.createSession(connectMessage, principal, "sessionId");

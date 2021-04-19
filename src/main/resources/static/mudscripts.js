@@ -9,7 +9,7 @@ function getSessionId(stompUrl) {
                     .replace(/^[0-9]+\//, "");
 }
 
-function connect(command) {
+function connect() {
     var socket = new SockJS('/mud');
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
@@ -25,6 +25,10 @@ function connect(command) {
         stompClient.subscribe('/user/queue/session', function(response) {
             showResponse('Session: ' + JSON.parse(response.body).status)
             $("#player").css('background-color', '#66FF00');
+            $('#connect_form').hide();
+            $('#send_form').show(0, function() {
+                $("#command").focus();
+            });
         });
         stompClient.subscribe('/user/queue/response', function(response) {
             decodedMessage = JSON.parse(response.body);
@@ -34,8 +38,7 @@ function connect(command) {
                 console.log("ignored message!");
             }
         });
-        stompClient.send("/mud/createSession", {}, JSON.stringify({'playerName': $("#player").val()}));
-        stompClient.send("/mud/command", {}, JSON.stringify({'command': command}));
+        stompClient.send("/mud/createSession", {}, JSON.stringify({'playerName': $("#player").val(), 'playerPassword': $('#player_password').val()}));
     });
 }
 
@@ -44,9 +47,17 @@ function sendCommand() {
     $("#command").val("");
 
     if(!connected) {
-        connect(command);
+        console.log("Not connected!");
     } else {
         stompClient.send("/mud/command", {}, JSON.stringify({'command': command}));
+    }
+}
+
+function connectCommand() {
+    if(!connected) {
+        connect();
+    } else {
+        console.log("Already connected!");
     }
 
 }
@@ -65,5 +76,7 @@ $(function () {
         e.preventDefault();
     });
     $( "#send" ).click(function() { sendCommand(); });
+    $( "#connect" ).click(function() { connectCommand(); });
+    $("#player").focus();
 });
 

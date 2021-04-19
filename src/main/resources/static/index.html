@@ -23,7 +23,14 @@
     </div>
     <div class="row">
         <div class="col-md-6">
-            <form class="form-inline">
+            <form class="form-inline" id="connect_form">
+                <div class="form-group">
+                    <label for="player_password">Password</label>
+                    <input type="text" id="player_password" class="form-control">
+                </div>
+                <button id="connect" class="btn btn-default" type="submit">Connect</button>
+            </form>
+            <form class="form-inline" id="send_form" hidden="true">
                 <div class="form-group">
                     <label for="command">Input</label>
                     <input type="text" id="command" class="form-control">
