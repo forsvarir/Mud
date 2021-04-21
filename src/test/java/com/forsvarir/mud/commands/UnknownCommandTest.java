@@ -20,7 +20,7 @@ class UnknownCommandTest {
     }
 
     @Test
-    void processCommand_unknownCommand_sendsHuh() {
+    void processCommand_sendsHuh() {
         Player sendingPlayer = new Player("Harry", "A User", "A session");
 
         command.processCommand("", sendingPlayer);

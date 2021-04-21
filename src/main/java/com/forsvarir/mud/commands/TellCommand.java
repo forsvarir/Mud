@@ -19,7 +19,9 @@ public class TellCommand implements MudCommand {
         var playerName = arguments.substring(0, arguments.indexOf(" "));
         var targetPlayer = sessionManager.findPlayer(playerName);
 
-        if (targetPlayer != null) {
+        if (targetPlayer == sender) {
+            messageSender.sendToUser("You try to tell yourself something.\n\r", sender.getPrincipal(), sender.getSessionId());
+        } else if (targetPlayer != null) {
             var message = arguments.substring(arguments.indexOf(" ") + 1);
             messageSender.sendToUser(sender.getName() + " tells you \"" + message + "\"", targetPlayer.getPrincipal(), targetPlayer.getSessionId());
             messageSender.sendToUser("You tell " + targetPlayer.getName() + " \"" + message + "\"", sender.getPrincipal(), sender.getSessionId());

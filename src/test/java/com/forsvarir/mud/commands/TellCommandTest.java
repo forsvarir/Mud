@@ -23,7 +23,7 @@ class TellCommandTest {
     }
 
     @Test
-    void processCommand_SendsToCorrectUser() {
+    void processCommand_sendsToCorrectUser() {
         Player targetPlayer = new Player("harry", "harryPrincipal", "harrySession");
         when(sessionManager.findPlayer(any())).thenReturn(targetPlayer);
 
@@ -43,5 +43,16 @@ class TellCommandTest {
         command.processCommand("harry hi!", talkingPlayer);
 
         verify(messageSender).sendToUser("No-one by that name here.\n\r", "talkingPrincipal", "talkingSession");
+    }
+
+    @Test
+    void processCommand_targetPlayerIsTalker_selfTalkMessage() {
+        Player talkingPlayer = new Player("talker", "talkingPrincipal", "talkingSession");
+
+        when(sessionManager.findPlayer(any())).thenReturn(talkingPlayer);
+
+        command.processCommand("harry hi!", talkingPlayer);
+
+        verify(messageSender).sendToUser("You try to tell yourself something.\n\r", "talkingPrincipal", "talkingSession");
     }
 }
