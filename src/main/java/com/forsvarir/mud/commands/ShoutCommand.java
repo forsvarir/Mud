@@ -13,11 +13,6 @@ public class ShoutCommand implements MudCommand {
     }
 
     @Override
-    public String getCommand() {
-        return "shout";
-    }
-
-    @Override
     public void processCommand(String message, Player sender) {
         messageSender.sendToAll(sender.getName() + " shouts \"" + message + "\"");
     }

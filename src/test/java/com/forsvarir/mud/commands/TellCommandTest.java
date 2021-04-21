@@ -23,7 +23,7 @@ class TellCommandTest {
     }
 
     @Test
-    void processCommand_tellSendsToCorrectUser() {
+    void processCommand_SendsToCorrectUser() {
         Player targetPlayer = new Player("harry", "harryPrincipal", "harrySession");
         when(sessionManager.findPlayer(any())).thenReturn(targetPlayer);
 
@@ -33,5 +33,15 @@ class TellCommandTest {
         verify(sessionManager).findPlayer("harry");
         verify(messageSender).sendToUser("talker tells you \"hi!\"", "harryPrincipal", "harrySession");
         verify(messageSender).sendToUser("You tell harry \"hi!\"", "talkingPrincipal", "talkingSession");
+    }
+
+    @Test
+    void processCommand_targetPlayerNotPresent_whoMessage() {
+        when(sessionManager.findPlayer(any())).thenReturn(null);
+
+        Player talkingPlayer = new Player("talker", "talkingPrincipal", "talkingSession");
+        command.processCommand("harry hi!", talkingPlayer);
+
+        verify(messageSender).sendToUser("No-one by that name here.\n\r", "talkingPrincipal", "talkingSession");
     }
 }

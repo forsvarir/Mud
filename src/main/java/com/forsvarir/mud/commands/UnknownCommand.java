@@ -13,11 +13,6 @@ public class UnknownCommand implements MudCommand {
     }
 
     @Override
-    public String getCommand() {
-        return "huh";
-    }
-
-    @Override
     public void processCommand(String arguments, Player sender) {
         messageSender.sendToUser("Huh?", sender.getPrincipal(), sender.getSessionId());
     }
