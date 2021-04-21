@@ -1,8 +1,11 @@
 package com.forsvarir.mud.communications;
 
 import com.forsvarir.mud.Player;
+import com.forsvarir.mud.Room;
+import com.forsvarir.mud.RoomManager;
 import com.forsvarir.mud.SessionManager;
 import com.forsvarir.mud.communications.messages.ConnectMessage;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -10,21 +13,31 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.security.Principal;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class SessionControllerTest {
     @Mock
-    SessionManager sessionManager;
+    private SessionManager sessionManager;
     @Mock
-    MessageSender messageSender;
+    private MessageSender messageSender;
+    @Mock
+    private RoomManager roomManager;
 
     @InjectMocks
     SessionController sessionController;
+
+    @BeforeEach
+    void beforeEach() {
+        Room defaultRoom = new Room(0, "default\n\r");
+        when(roomManager.findRoom(anyInt())).thenReturn(Optional.of(defaultRoom));
+    }
 
     @Test
     void createSession_addsSession() {
@@ -43,6 +56,9 @@ class SessionControllerTest {
 
         Player player = new Player("name", "prince", "sess");
         when(sessionManager.createSession(any(), any(), any())).thenReturn(player);
+
+        Room welcomeRoom = new Room(0, "Welcome!\n\r");
+        when(roomManager.findRoom(anyInt())).thenReturn(Optional.of(welcomeRoom));
 
         sessionController.createSession(connectMessage, principal, "sessionId");
 

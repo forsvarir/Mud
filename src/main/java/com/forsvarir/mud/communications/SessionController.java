@@ -1,5 +1,6 @@
 package com.forsvarir.mud.communications;
 
+import com.forsvarir.mud.RoomManager;
 import com.forsvarir.mud.SessionManager;
 import com.forsvarir.mud.communications.messages.ConnectMessage;
 import com.forsvarir.mud.communications.messages.ConnectionStatusMessage;
@@ -14,10 +15,12 @@ import java.security.Principal;
 public class SessionController {
     private final SessionManager sessionManager;
     private final MessageSender messageSender;
+    private final RoomManager roomManager;
 
-    SessionController(SessionManager sessionManager, MessageSender messageSender) {
+    SessionController(SessionManager sessionManager, MessageSender messageSender, RoomManager roomManager) {
         this.sessionManager = sessionManager;
         this.messageSender = messageSender;
+        this.roomManager = roomManager;
     }
 
     @MessageMapping("/createSession")
@@ -28,7 +31,9 @@ public class SessionController {
 
         var player = sessionManager.createSession(principal.getName(), sessionId, connectMessage.getPlayerName());
 
-        messageSender.sendToPlayer("Welcome!\n\r", player);
+        var room = roomManager.findRoom(RoomManager.DEFAULT_ROOM).orElseThrow();
+
+        messageSender.sendToPlayer(room.getDescription(), player);
 
         return new ConnectionStatusMessage("Connected");
     }
