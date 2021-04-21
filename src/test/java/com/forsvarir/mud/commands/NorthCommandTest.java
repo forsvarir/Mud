@@ -1,5 +1,8 @@
-package com.forsvarir.mud;
+package com.forsvarir.mud.commands;
 
+import com.forsvarir.mud.Player;
+import com.forsvarir.mud.Room;
+import com.forsvarir.mud.RoomManager;
 import com.forsvarir.mud.communications.MessageSender;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -60,7 +63,6 @@ class NorthCommandTest {
         startingRoom.addPlayer(player);
         command.processCommand("N", player);
 
-        verify(messageSender).sendToPlayer("You go North.\n\r", player);
         verify(messageSender).sendToPlayer("Destination\n\r", player);
     }
 
@@ -79,8 +81,8 @@ class NorthCommandTest {
         startingRoom.addPlayer(stationaryPlayer2);
         command.processCommand("N", player);
 
-        verify(messageSender).sendToPlayer("Movingplayer leaves North.\n\r", stationaryPlayer1);
-        verify(messageSender).sendToPlayer("Movingplayer leaves North.\n\r", stationaryPlayer2);
+        verify(messageSender).sendToPlayer("Movingplayer leaves north.\n\r", stationaryPlayer1);
+        verify(messageSender).sendToPlayer("Movingplayer leaves north.\n\r", stationaryPlayer2);
     }
 
     @Test

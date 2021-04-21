@@ -1,6 +1,7 @@
-package com.forsvarir.mud;
+package com.forsvarir.mud.commands;
 
-import com.forsvarir.mud.commands.MudCommand;
+import com.forsvarir.mud.Player;
+import com.forsvarir.mud.RoomManager;
 import com.forsvarir.mud.communications.MessageSender;
 import org.springframework.stereotype.Service;
 
@@ -36,14 +37,12 @@ public class NorthCommand implements MudCommand {
             return;
         }
 
-        messageSender.sendToPlayer("You go North.\n\r", sender);
-
         currentRoom.removePlayer(sender);
 
         messageSender.sendToPlayer(destinationRoom.get().getDescription() + "\n\r", sender);
 
         for (var player : currentRoom.getPlayersInRoom()) {
-            messageSender.sendToPlayer(sender.getName() + " leaves North.\n\r", player);
+            messageSender.sendToPlayer(sender.getName() + " leaves north.\n\r", player);
         }
 
         for (var player : destinationRoom.get().getPlayersInRoom()) {
