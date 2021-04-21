@@ -31,8 +31,8 @@ class TellCommandTest {
         command.processCommand("harry hi!", talkingPlayer);
 
         verify(sessionManager).findPlayer("harry");
-        verify(messageSender).sendToUser("talker tells you \"hi!\"", "harryPrincipal", "harrySession");
-        verify(messageSender).sendToUser("You tell harry \"hi!\"", "talkingPrincipal", "talkingSession");
+        verify(messageSender).sendToUser("talker tells you 'hi!'", "harryPrincipal", "harrySession");
+        verify(messageSender).sendToUser("You tell harry 'hi!'", "talkingPrincipal", "talkingSession");
     }
 
     @Test

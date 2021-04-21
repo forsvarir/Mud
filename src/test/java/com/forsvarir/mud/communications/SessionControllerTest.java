@@ -66,6 +66,22 @@ class SessionControllerTest {
     }
 
     @Test
+    void createSession_addsPlayerToWelcomeRoom() {
+        ConnectMessage connectMessage = new ConnectMessage("PlayerName", "password");
+        Principal principal = () -> "PrincipalName";
+
+        Player player = new Player("name", "prince", "sess");
+        when(sessionManager.createSession(any(), any(), any())).thenReturn(player);
+
+        Room welcomeRoom = new Room(0, "Welcome!\n\r");
+        when(roomManager.findRoom(anyInt())).thenReturn(Optional.of(welcomeRoom));
+
+        sessionController.createSession(connectMessage, principal, "sessionId");
+
+        assertThat(welcomeRoom.getPlayersInRoom()).containsExactly(player);
+    }
+
+    @Test
     void createSession_returnsSuccess() {
         var response = sessionController.createSession(new ConnectMessage(), () -> "", "");
         assertThat(response.getStatus()).isEqualTo("Connected");

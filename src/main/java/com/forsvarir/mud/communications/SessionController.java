@@ -32,6 +32,7 @@ public class SessionController {
         var player = sessionManager.createSession(principal.getName(), sessionId, connectMessage.getPlayerName());
 
         var room = roomManager.findRoom(RoomManager.DEFAULT_ROOM).orElseThrow();
+        room.addPlayer(player);
 
         messageSender.sendToPlayer(room.getDescription(), player);
 

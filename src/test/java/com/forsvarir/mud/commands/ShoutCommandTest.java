@@ -25,6 +25,6 @@ class ShoutCommandTest {
 
         command.processCommand("Hello!", sendingPlayer);
 
-        verify(messageSender).sendToAll("Harry shouts \"Hello!\"");
+        verify(messageSender).sendToAll("Harry shouts 'Hello!'");
     }
 }

@@ -23,8 +23,8 @@ public class TellCommand implements MudCommand {
             messageSender.sendToUser("You try to tell yourself something.\n\r", sender.getPrincipal(), sender.getSessionId());
         } else if (targetPlayer != null) {
             var message = arguments.substring(arguments.indexOf(" ") + 1);
-            messageSender.sendToUser(sender.getName() + " tells you \"" + message + "\"", targetPlayer.getPrincipal(), targetPlayer.getSessionId());
-            messageSender.sendToUser("You tell " + targetPlayer.getName() + " \"" + message + "\"", sender.getPrincipal(), sender.getSessionId());
+            messageSender.sendToUser(sender.getName() + " tells you '" + message + "'", targetPlayer.getPrincipal(), targetPlayer.getSessionId());
+            messageSender.sendToUser("You tell " + targetPlayer.getName() + " '" + message + "'", sender.getPrincipal(), sender.getSessionId());
         } else {
             messageSender.sendToUser("No-one by that name here.\n\r", sender.getPrincipal(), sender.getSessionId());
         }
