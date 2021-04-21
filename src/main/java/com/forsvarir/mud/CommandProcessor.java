@@ -25,8 +25,13 @@ public class CommandProcessor {
 
     public void processCommand(String command, String principalName, String sessionId) {
         var tokens = commandTokenizer.extractTokens(command);
-        var commandProcessor = commands.getOrDefault(tokens.getCommand() + "Command", unknownCommand);
+        var commandProcessor = commands.getOrDefault(calculateCommandBeanName(tokens.getCommand()),
+                unknownCommand);
         var sender = sessionManager.findPlayer(principalName, sessionId);
         commandProcessor.processCommand(tokens.getArguments(), sender);
+    }
+
+    private String calculateCommandBeanName(String command) {
+        return command + "Command";
     }
 }
