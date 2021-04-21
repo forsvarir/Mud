@@ -1,6 +1,7 @@
 package com.forsvarir.mud.commands;
 
 import com.forsvarir.mud.Player;
+import com.forsvarir.mud.Room;
 import com.forsvarir.mud.RoomManager;
 import com.forsvarir.mud.communications.MessageSender;
 import org.springframework.stereotype.Service;
@@ -17,9 +18,13 @@ public class SayCommand implements MudCommand {
 
     @Override
     public void processCommand(String arguments, Player sender) {
-        messageSender.sendToUser("You say '" + arguments + "'\n\r", sender.getPrincipal(), sender.getSessionId());
+        final Room room = sender.getRoom();
+        if (room == null) {
+            // TODO: what should this do?
+            return;
+        }
 
-        var room = roomManager.findRoom(0).orElseThrow();
+        messageSender.sendToUser("You say '" + arguments + "'\n\r", sender.getPrincipal(), sender.getSessionId());
 
         for (var player : room.getPlayersInRoom()) {
             if (sender != player) {

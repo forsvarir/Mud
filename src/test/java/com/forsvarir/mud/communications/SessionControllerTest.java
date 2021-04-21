@@ -37,6 +37,8 @@ class SessionControllerTest {
     void beforeEach() {
         Room defaultRoom = new Room(0, "default\n\r");
         when(roomManager.findRoom(anyInt())).thenReturn(Optional.of(defaultRoom));
+        Player player = new Player("player", "", "");
+        when(sessionManager.createSession(any(), any(), any())).thenReturn(player);
     }
 
     @Test

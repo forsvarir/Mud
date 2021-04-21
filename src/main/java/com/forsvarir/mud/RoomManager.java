@@ -27,12 +27,12 @@ public class RoomManager {
         rooms.put(5, new Room(5, "Up Room\n\r"));
         rooms.put(6, new Room(6, "Down Room\n\r"));
 
-        rooms.get(0).addExit("N", 1);
-        rooms.get(0).addExit("S", 2);
-        rooms.get(0).addExit("W", 3);
-        rooms.get(0).addExit("E", 4);
-        rooms.get(0).addExit("U", 5);
-        rooms.get(0).addExit("D", 6);
+        rooms.get(0).addExit("North", 1);
+        rooms.get(0).addExit("South", 2);
+        rooms.get(0).addExit("West", 3);
+        rooms.get(0).addExit("East", 4);
+        rooms.get(0).addExit("Up", 5);
+        rooms.get(0).addExit("Down", 6);
 
         rooms.get(1).addExit("S", 0);
         rooms.get(2).addExit("N", 0);

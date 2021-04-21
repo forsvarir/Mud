@@ -29,4 +29,6 @@
 
 * Should MessageSender know how to send to room, or should individual commands / something else?
 * Should commands return messagesActions to be executed/sent rather than sending them itself?
-  ~~* Should `MessageSender` only deal with text and have responsibility for constructing messages from the string?~~
+* Null rooms seem like they could be a problem, should players goto a void room in this case?
+
+~~* Should `MessageSender` only deal with text and have responsibility for constructing messages from the string?~~

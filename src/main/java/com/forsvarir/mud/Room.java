@@ -26,10 +26,6 @@ public class Room {
         return description;
     }
 
-    public void addPlayer(Player playerToAdd) {
-        players.add(playerToAdd);
-    }
-
     public List<Player> getPlayersInRoom() {
         return Collections.unmodifiableList(players);
     }
@@ -40,5 +36,15 @@ public class Room {
 
     public void addExit(String exitName, int destinationRoomId) {
         exits.add(new Exit(exitName, destinationRoomId));
+    }
+
+    public void addPlayer(Player playerToAdd) {
+        players.add(playerToAdd);
+        playerToAdd.setRoom(this);
+    }
+
+    public void removePlayer(Player player) {
+        players.remove(player);
+        player.setRoom(null);
     }
 }

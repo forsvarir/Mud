@@ -25,4 +25,5 @@ public class RoomTest {
 
         assertThat(optionalExit).hasValueSatisfying(exit -> assertThat(exit.getDestinationRoomId()).isEqualTo(5));
     }
+
 }

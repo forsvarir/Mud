@@ -59,7 +59,7 @@ class SayCommandTest {
     }
 
     @Test
-    void processCommand_playerNotInRoom_messageNotSentToThem() {
+    void processCommand_anotherPlayerNotInRoom_messageNotSentToThem() {
         Player talkingPlayer = new Player("Talker", "talkerPrincipal", "talkerSession");
         Player playerNOTInRoom = new Player("Player3", "NOTinRoomPrincipal", "NOTinRoomSession");
 
@@ -74,7 +74,7 @@ class SayCommandTest {
     }
 
     private Room CreateRoomWithPlayers(List<Player> players) {
-        Room room = new Room(0, "Room1");
+        Room room = new Room(5, "Room1");
 
         players.forEach(room::addPlayer);
 

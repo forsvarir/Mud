@@ -26,11 +26,11 @@ class RoomManagerTest {
     void findRoom_defaultRoom_hasExitsToAllStandardDirections() {
         var defaultRoom = roomManager.findRoom(RoomManager.DEFAULT_ROOM).orElseThrow();
 
-        assertThat(defaultRoom.getExit("N")).isNotEmpty();
-        assertThat(defaultRoom.getExit("S")).isNotEmpty();
-        assertThat(defaultRoom.getExit("W")).isNotEmpty();
-        assertThat(defaultRoom.getExit("E")).isNotEmpty();
-        assertThat(defaultRoom.getExit("U")).isNotEmpty();
-        assertThat(defaultRoom.getExit("D")).isNotEmpty();
+        assertThat(defaultRoom.getExit("North")).isNotEmpty();
+        assertThat(defaultRoom.getExit("South")).isNotEmpty();
+        assertThat(defaultRoom.getExit("West")).isNotEmpty();
+        assertThat(defaultRoom.getExit("East")).isNotEmpty();
+        assertThat(defaultRoom.getExit("Up")).isNotEmpty();
+        assertThat(defaultRoom.getExit("Down")).isNotEmpty();
     }
 }
