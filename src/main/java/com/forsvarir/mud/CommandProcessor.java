@@ -8,26 +8,22 @@ import java.util.Map;
 
 @Service
 public class CommandProcessor {
-    private final SessionManager sessionManager;
     private final CommandTokenizer commandTokenizer;
     private final UnknownCommand unknownCommand;
     private final Map<String, MudCommand> commands;
 
-    public CommandProcessor(SessionManager sessionManager,
-                            CommandTokenizer commandTokenizer,
+    public CommandProcessor(CommandTokenizer commandTokenizer,
                             UnknownCommand unknownCommand,
                             Map<String, MudCommand> commands) {
-        this.sessionManager = sessionManager;
         this.commandTokenizer = commandTokenizer;
         this.unknownCommand = unknownCommand;
         this.commands = commands;
     }
 
-    public void processCommand(String command, String principalName, String sessionId) {
+    public void processCommand(String command, Player sender) {
         var tokens = commandTokenizer.extractTokens(command);
         var commandProcessor = commands.getOrDefault(calculateCommandBeanName(tokens.getCommand()),
                 unknownCommand);
-        var sender = sessionManager.findPlayer(principalName, sessionId);
         commandProcessor.processCommand(tokens.getArguments(), sender);
     }
 
