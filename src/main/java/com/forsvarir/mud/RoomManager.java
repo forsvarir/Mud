@@ -34,12 +34,12 @@ public class RoomManager {
         rooms.get(0).addExit("Up", 5);
         rooms.get(0).addExit("Down", 6);
 
-        rooms.get(1).addExit("S", 0);
-        rooms.get(2).addExit("N", 0);
-        rooms.get(3).addExit("E", 0);
-        rooms.get(4).addExit("W", 0);
-        rooms.get(5).addExit("D", 0);
-        rooms.get(6).addExit("U", 0);
+        rooms.get(1).addExit("South", 0);
+        rooms.get(2).addExit("North", 0);
+        rooms.get(3).addExit("East", 0);
+        rooms.get(4).addExit("West", 0);
+        rooms.get(5).addExit("Down", 0);
+        rooms.get(6).addExit("Up", 0);
     }
 
     public Optional<Room> findRoom(int roomId) {
