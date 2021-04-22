@@ -31,6 +31,7 @@
 
 ### Puzzles
 
+* \n\r aren't displayed in browser, lines are run together, what do we need to send for this to work as expected?
 * Should MessageSender know how to send to room, or should individual commands / something else?
 * Should commands return messagesActions to be executed/sent rather than sending them itself?
 * Null rooms seem like they could be a problem, should players goto a void room in this case?

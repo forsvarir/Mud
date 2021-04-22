@@ -10,9 +10,9 @@ public class LookCommand implements MudCommand {
     private final MessageSender messageSender;
     private final RoomActions roomActions;
 
-    public LookCommand(MessageSender messageSender) {
+    public LookCommand(MessageSender messageSender, RoomActions roomActions) {
         this.messageSender = messageSender;
-        this.roomActions = new RoomActions();
+        this.roomActions = roomActions;
     }
 
     @Override
