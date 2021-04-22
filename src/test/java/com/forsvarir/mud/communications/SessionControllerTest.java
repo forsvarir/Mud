@@ -4,6 +4,7 @@ import com.forsvarir.mud.Player;
 import com.forsvarir.mud.Room;
 import com.forsvarir.mud.RoomManager;
 import com.forsvarir.mud.SessionManager;
+import com.forsvarir.mud.actions.RoomActions;
 import com.forsvarir.mud.communications.messages.ConnectMessage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,6 +30,8 @@ class SessionControllerTest {
     private MessageSender messageSender;
     @Mock
     private RoomManager roomManager;
+    @Mock
+    private RoomActions roomActions;
 
     @InjectMocks
     SessionController sessionController;
@@ -52,7 +55,22 @@ class SessionControllerTest {
     }
 
     @Test
-    void createSession_sendsWelcomeMessage() {
+    void createSession_sendsRoomView() {
+        ConnectMessage connectMessage = new ConnectMessage("PlayerName", "password");
+        Principal principal = () -> "PrincipalName";
+
+        Player player = new Player("name", "prince", "sess");
+        when(sessionManager.createSession(any(), any(), any())).thenReturn(player);
+
+        when(roomActions.buildRoomViewForPlayer(any(), any())).thenReturn("Welcome!\n\r");
+
+        sessionController.createSession(connectMessage, principal, "sessionId");
+
+        verify(messageSender).sendToPlayer("Welcome!\n\r", player);
+    }
+
+    @Test
+    void createSession_getsCorrectRoomView() {
         ConnectMessage connectMessage = new ConnectMessage("PlayerName", "password");
         Principal principal = () -> "PrincipalName";
 
@@ -64,7 +82,7 @@ class SessionControllerTest {
 
         sessionController.createSession(connectMessage, principal, "sessionId");
 
-        verify(messageSender).sendToPlayer("Welcome!\n\r", player);
+        verify(roomActions).buildRoomViewForPlayer(welcomeRoom, player);
     }
 
     @Test

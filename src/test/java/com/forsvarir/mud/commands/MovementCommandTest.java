@@ -3,6 +3,7 @@ package com.forsvarir.mud.commands;
 import com.forsvarir.mud.Player;
 import com.forsvarir.mud.Room;
 import com.forsvarir.mud.RoomManager;
+import com.forsvarir.mud.actions.RoomActions;
 import com.forsvarir.mud.communications.MessageSender;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,12 +18,14 @@ class MovementCommandTest {
     private MessageSender messageSender;
     private RoomManager roomManager;
     private TestableMovementCommand command;
+    private RoomActions roomActions;
 
     @BeforeEach
     void beforeEach() {
         messageSender = mock(MessageSender.class);
         roomManager = mock(RoomManager.class);
-        command = new TestableMovementCommand(messageSender, roomManager, "North", "north", "South");
+        roomActions = mock(RoomActions.class);
+        command = new TestableMovementCommand(messageSender, roomManager, roomActions, "North", "north", "South");
     }
 
     @Test
@@ -53,7 +56,7 @@ class MovementCommandTest {
     }
 
     @Test
-    void processCommand_exitExists_sendsNewDescriptionToPlayer() {
+    void processCommand_exitExists_sendsNewRoomViewToPlayer() {
         Room destinationRoom = new Room(222, "Destination");
         Room startingRoom = new Room(0, "Start");
         startingRoom.addExit("North", 222);
@@ -61,9 +64,12 @@ class MovementCommandTest {
 
         Player player = new Player("name", "principal", "sessionId");
         startingRoom.addPlayer(player);
+
+        when(roomActions.buildRoomViewForPlayer(any(), any())).thenReturn("RoomView\n\r");
+
         command.processCommand("", player);
 
-        verify(messageSender).sendToPlayer("Destination\n\r", player);
+        verify(messageSender).sendToPlayer("RoomView\n\r", player);
     }
 
     @Test
@@ -105,28 +111,23 @@ class MovementCommandTest {
     }
 
     @Test
-    void processCommand_exitExistsPlayersInDestination_sendsPlayersToMover() {
+    void processCommand_buildsDestinationRoomViewForPlayer() {
         Room destinationRoom = new Room(222, "Destination");
         Room startingRoom = new Room(0, "Start");
         startingRoom.addExit("North", 222);
         when(roomManager.findRoom(anyInt())).thenReturn(Optional.of(destinationRoom));
 
         Player player = new Player("Movingplayer", "principal", "sessionId");
-        Player stationaryPlayer1 = new Player("P1", "principal", "sessionId");
-        Player stationaryPlayer2 = new Player("P2", "principal", "sessionId");
         startingRoom.addPlayer(player);
-        destinationRoom.addPlayer(stationaryPlayer1);
-        destinationRoom.addPlayer(stationaryPlayer2);
         command.processCommand("", player);
 
-        verify(messageSender).sendToPlayer("P1 is here.\n\r", player);
-        verify(messageSender).sendToPlayer("P2 is here.\n\r", player);
+        verify(roomActions).buildRoomViewForPlayer(destinationRoom, player);
     }
 
     static class TestableMovementCommand extends MovementCommand {
         TestableMovementCommand(MessageSender messageSender, RoomManager roomManager,
-                                String direction, String lowerCaseDirection, String inverseDirection) {
-            super(messageSender, roomManager, direction, lowerCaseDirection, inverseDirection);
+                                RoomActions roomActions, String direction, String lowerCaseDirection, String inverseDirection) {
+            super(messageSender, roomManager, roomActions, direction, lowerCaseDirection, inverseDirection);
         }
     }
 }

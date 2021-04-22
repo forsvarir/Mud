@@ -2,6 +2,7 @@ package com.forsvarir.mud.communications;
 
 import com.forsvarir.mud.RoomManager;
 import com.forsvarir.mud.SessionManager;
+import com.forsvarir.mud.actions.RoomActions;
 import com.forsvarir.mud.communications.messages.ConnectMessage;
 import com.forsvarir.mud.communications.messages.ConnectionStatusMessage;
 import org.springframework.messaging.handler.annotation.Header;
@@ -16,11 +17,13 @@ public class SessionController {
     private final SessionManager sessionManager;
     private final MessageSender messageSender;
     private final RoomManager roomManager;
+    private final RoomActions roomActions;
 
-    SessionController(SessionManager sessionManager, MessageSender messageSender, RoomManager roomManager) {
+    SessionController(SessionManager sessionManager, MessageSender messageSender, RoomManager roomManager, RoomActions roomActions) {
         this.sessionManager = sessionManager;
         this.messageSender = messageSender;
         this.roomManager = roomManager;
+        this.roomActions = roomActions;
     }
 
     @MessageMapping("/createSession")
@@ -34,7 +37,9 @@ public class SessionController {
         var room = roomManager.findRoom(RoomManager.DEFAULT_ROOM).orElseThrow();
         room.addPlayer(player);
 
-        messageSender.sendToPlayer(room.getDescription(), player);
+        var roomView = roomActions.buildRoomViewForPlayer(room, player);
+
+        messageSender.sendToPlayer(roomView, player);
 
         return new ConnectionStatusMessage("Connected");
     }
