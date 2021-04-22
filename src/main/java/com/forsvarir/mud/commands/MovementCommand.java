@@ -4,7 +4,7 @@ import com.forsvarir.mud.Player;
 import com.forsvarir.mud.RoomManager;
 import com.forsvarir.mud.communications.MessageSender;
 
-public abstract class MovementCommand {
+public abstract class MovementCommand implements MudCommand {
     private final MessageSender messageSender;
     private final RoomManager roomManager;
     private final String direction;
@@ -19,7 +19,8 @@ public abstract class MovementCommand {
         this.inverseDirection = inverseDirection;
     }
 
-    protected void move(Player sender) {
+    @Override
+    public void processCommand(String arguments, Player sender) {
         var currentRoom = sender.getRoom();
 
         if (currentRoom == null) {

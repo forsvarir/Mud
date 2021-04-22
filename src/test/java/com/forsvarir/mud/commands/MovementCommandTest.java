@@ -32,7 +32,7 @@ class MovementCommandTest {
         Player player = new Player("name", "principal", "sessionId");
         Room startingRoom = new Room(0, "Start");
         startingRoom.addPlayer(player);
-        command.delegateMove(player);
+        command.processCommand("", player);
 
         verify(messageSender).sendToPlayer("You can't go that way.\n\r", player);
     }
@@ -46,7 +46,7 @@ class MovementCommandTest {
 
         Player player = new Player("name", "principal", "sessionId");
         startingRoom.addPlayer(player);
-        command.delegateMove(player);
+        command.processCommand("", player);
 
         assertThat(startingRoom.getPlayersInRoom()).isEmpty();
         assertThat(destinationRoom.getPlayersInRoom()).containsExactly(player);
@@ -61,7 +61,7 @@ class MovementCommandTest {
 
         Player player = new Player("name", "principal", "sessionId");
         startingRoom.addPlayer(player);
-        command.delegateMove(player);
+        command.processCommand("", player);
 
         verify(messageSender).sendToPlayer("Destination\n\r", player);
     }
@@ -79,7 +79,7 @@ class MovementCommandTest {
         startingRoom.addPlayer(player);
         startingRoom.addPlayer(stationaryPlayer1);
         startingRoom.addPlayer(stationaryPlayer2);
-        command.delegateMove(player);
+        command.processCommand("", player);
 
         verify(messageSender).sendToPlayer("Movingplayer leaves north.\n\r", stationaryPlayer1);
         verify(messageSender).sendToPlayer("Movingplayer leaves north.\n\r", stationaryPlayer2);
@@ -98,7 +98,7 @@ class MovementCommandTest {
         startingRoom.addPlayer(player);
         destinationRoom.addPlayer(stationaryPlayer1);
         destinationRoom.addPlayer(stationaryPlayer2);
-        command.delegateMove(player);
+        command.processCommand("", player);
 
         verify(messageSender).sendToPlayer("Movingplayer has arrived from the South.\n\r", stationaryPlayer1);
         verify(messageSender).sendToPlayer("Movingplayer has arrived from the South.\n\r", stationaryPlayer2);
@@ -108,10 +108,6 @@ class MovementCommandTest {
         TestableMovementCommand(MessageSender messageSender, RoomManager roomManager,
                                 String direction, String lowerCaseDirection, String inverseDirection) {
             super(messageSender, roomManager, direction, lowerCaseDirection, inverseDirection);
-        }
-
-        void delegateMove(Player player) {
-            move(player);
         }
     }
 }
