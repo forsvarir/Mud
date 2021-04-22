@@ -5,8 +5,8 @@ import com.forsvarir.mud.communications.MessageSender;
 import org.springframework.stereotype.Service;
 
 @Service
-public class DownCommand extends MovementCommand {
-    public DownCommand(MessageSender messageSender, RoomManager roomManager) {
-        super(messageSender, roomManager, "Down", "down", "Up");
+public class DCommand extends DownCommand {
+    public DCommand(MessageSender messageSender, RoomManager roomManager) {
+        super(messageSender, roomManager);
     }
 }

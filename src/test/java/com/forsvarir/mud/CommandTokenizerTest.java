@@ -21,6 +21,12 @@ class CommandTokenizerTest {
     }
 
     @Test
+    void extractTokens_singleLetterWord_populatesCapitalizedCommand() {
+        var tokens = tokenizer.extractTokens("n");
+        assertThat(tokens.getCommand()).isEqualTo("N");
+    }
+
+    @Test
     void extractTokens_singleWord_stripsTrailingSpaces() {
         var tokens = tokenizer.extractTokens("command     ");
         assertThat(tokens.getCommand()).isEqualTo("command");
