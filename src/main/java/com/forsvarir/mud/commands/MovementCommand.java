@@ -20,8 +20,8 @@ public abstract class MovementCommand implements MudCommand {
     }
 
     @Override
-    public void processCommand(String arguments, Player sender) {
-        var currentRoom = sender.getRoom();
+    public void processCommand(String arguments, Player movingPlayer) {
+        var currentRoom = movingPlayer.getRoom();
 
         if (currentRoom == null) {
             // TODO: Can this happen?  Possibly during character creation...
@@ -30,7 +30,7 @@ public abstract class MovementCommand implements MudCommand {
 
         var exit = currentRoom.getExit(direction);
         if (exit.isEmpty()) {
-            messageSender.sendToPlayer("You can't go that way.\n\r", sender);
+            messageSender.sendToPlayer("You can't go that way.\n\r", movingPlayer);
             return;
         }
 
@@ -40,18 +40,19 @@ public abstract class MovementCommand implements MudCommand {
             return;
         }
 
-        currentRoom.removePlayer(sender);
+        currentRoom.removePlayer(movingPlayer);
 
-        messageSender.sendToPlayer(destinationRoom.get().getDescription() + "\n\r", sender);
+        messageSender.sendToPlayer(destinationRoom.get().getDescription() + "\n\r", movingPlayer);
 
         for (var player : currentRoom.getPlayersInRoom()) {
-            messageSender.sendToPlayer(sender.getName() + " leaves " + lowerCaseDirection + ".\n\r", player);
+            messageSender.sendToPlayer(movingPlayer.getName() + " leaves " + lowerCaseDirection + ".\n\r", player);
         }
 
         for (var player : destinationRoom.get().getPlayersInRoom()) {
-            messageSender.sendToPlayer(sender.getName() + " has arrived from the " + inverseDirection + ".\n\r", player);
+            messageSender.sendToPlayer(player.getName() + " is here.\n\r", movingPlayer);
+            messageSender.sendToPlayer(movingPlayer.getName() + " has arrived from the " + inverseDirection + ".\n\r", player);
         }
 
-        destinationRoom.get().addPlayer(sender);
+        destinationRoom.get().addPlayer(movingPlayer);
     }
 }

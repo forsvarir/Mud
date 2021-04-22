@@ -2,11 +2,11 @@
 
 ### TO DO (priority order):
 
-* Develop linkage between rooms to allow a structure to be formed
-* Develop directional commands to allow rooms to be explored.
+* Develop 'look' command
 * Provide storage for rooms so that they can be loaded rather than hard-coded.
 * Provide storage for players so that they can be validated at logon
 * Develop player attributes that can be adjusted during player creation (class perhaps)
+* Simple combat system, allow two characters to fight
 * User player where possible, rather than principal/session
 * Session disconnections / timeout actions
 
@@ -24,6 +24,9 @@
 * Add the concept of a 'Room' to limit visibility.
 * Improve "tell" command processing, including error conditions
 * Develop command processor - possibly tokeniser, command classes?
+* Develop linkage between rooms to allow a structure to be formed
+* Develop directional commands to allow rooms to be explored.
+* Display who's in room when entering
 
 ### Puzzles
 

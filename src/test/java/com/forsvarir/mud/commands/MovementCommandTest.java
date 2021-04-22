@@ -104,6 +104,25 @@ class MovementCommandTest {
         verify(messageSender).sendToPlayer("Movingplayer has arrived from the South.\n\r", stationaryPlayer2);
     }
 
+    @Test
+    void processCommand_exitExistsPlayersInDestination_sendsPlayersToMover() {
+        Room destinationRoom = new Room(222, "Destination");
+        Room startingRoom = new Room(0, "Start");
+        startingRoom.addExit("North", 222);
+        when(roomManager.findRoom(anyInt())).thenReturn(Optional.of(destinationRoom));
+
+        Player player = new Player("Movingplayer", "principal", "sessionId");
+        Player stationaryPlayer1 = new Player("P1", "principal", "sessionId");
+        Player stationaryPlayer2 = new Player("P2", "principal", "sessionId");
+        startingRoom.addPlayer(player);
+        destinationRoom.addPlayer(stationaryPlayer1);
+        destinationRoom.addPlayer(stationaryPlayer2);
+        command.processCommand("", player);
+
+        verify(messageSender).sendToPlayer("P1 is here.\n\r", player);
+        verify(messageSender).sendToPlayer("P2 is here.\n\r", player);
+    }
+
     static class TestableMovementCommand extends MovementCommand {
         TestableMovementCommand(MessageSender messageSender, RoomManager roomManager,
                                 String direction, String lowerCaseDirection, String inverseDirection) {
