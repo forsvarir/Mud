@@ -33,7 +33,7 @@ class LookCommandTest {
 
     @Test
     void processCommand_playersInRoom_playersSentToActor() {
-        Room currentRoom = new Room(0, "EveryPlaceEver\n\r");
+        Room currentRoom = new Room(0, "EveryPlaceEver");
         Player player = new Player("name", "principal", "sessionId");
         currentRoom.addPlayer(player);
         Player otherPlayer1 = new Player("OtherPlayer", "principal", "sessionId");
@@ -43,7 +43,8 @@ class LookCommandTest {
 
         command.processCommand("", player);
 
-        verify(messageSender).sendToPlayer("OtherPlayer is here.\n\r", player);
-        verify(messageSender).sendToPlayer("AnotherPlayer is here.\n\r", player);
+        verify(messageSender).sendToPlayer("EveryPlaceEver\n\r" +
+                "OtherPlayer is here.\n\r"
+                + "AnotherPlayer is here.\n\r", player);
     }
 }

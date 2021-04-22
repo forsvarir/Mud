@@ -3,6 +3,7 @@
 ### TO DO (priority order):
 
 * Develop 'look' command
+* Add ticker that sends out of band time changes to players
 * Provide storage for rooms so that they can be loaded rather than hard-coded.
 * Provide storage for players so that they can be validated at logon
 * Develop player attributes that can be adjusted during player creation (class perhaps)
